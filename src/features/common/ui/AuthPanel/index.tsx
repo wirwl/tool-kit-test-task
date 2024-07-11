@@ -1,5 +1,6 @@
 import { useUnit } from "effector-react";
 import { Button } from "../../../../shared/ui/Button";
+// @ts-ignore
 import oa from 'oauthio-web';
 import { $authPanel, saveAuthData } from "./store";
 import mainStyles from './index.module.scss';

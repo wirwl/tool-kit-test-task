@@ -7,7 +7,7 @@ import cn from 'classnames/bind';
 import { debounce } from 'lodash';
 
 const c = cn.bind(mainStyles);
-const { root, inputSearch, buttonSearch } = mainStyles;
+const { root, inputSearch } = mainStyles;
 
 type Props = {
     className?: string;

@@ -10,7 +10,7 @@ const { root, row1, row2, row3, row4, langList, langItem, cssName, shortDesc } =
 export function Repo() {
     const { name, owner } = useParams();
 
-    const [fetchRepo, { loading, data }] = useLazyQuery(getRepo, {
+    const [fetchRepo, { data }] = useLazyQuery(getRepo, {
         variables: {
             name, owner
         }

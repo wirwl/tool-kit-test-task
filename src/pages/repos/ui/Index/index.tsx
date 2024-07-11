@@ -5,18 +5,17 @@ import { RepoList } from "../../../../features/common/ui/RepoList";
 import { SearchPanel } from "../../../../features/common/ui/SearchPanel";
 import { Header } from "../../../../wiggets/repos/ui/Header";
 import { Footer } from "../../../../wiggets/repos/ui/Footer";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { $repoList, saveRepoListRepo } from "../../../../features/common/ui/RepoList/store";
 import { useUnit } from "effector-react";
 import { $query } from "../../../../features/common/ui/SearchPanel/store";
 import { mapperRepos } from "./lib";
-import { Skeleton } from "../../../../shared/ui/Skeleton";
 
 const { root, header, main, searchPanel } = mainStyles;
 
 export function Index() {
-    const [fetchRepos, { loading:ldRepos, data }] = useLazyQuery(getRepos);
-    const [fetchOwnRepos, { loading:ldOwnRepos, data: ownRepos }] = useLazyQuery(getOwnRepos);
+    const [fetchRepos, { loading:ldRepos }] = useLazyQuery(getRepos);
+    const [fetchOwnRepos, { loading:ldOwnRepos }] = useLazyQuery(getOwnRepos);
     const [repos, setRepos] = useUnit([$repoList, saveRepoListRepo]);
 
     const loading = ldRepos || ldOwnRepos;
