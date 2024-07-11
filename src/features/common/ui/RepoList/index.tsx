@@ -1,24 +1,31 @@
-import { useEffect, useState } from 'react';
 import { Paginator } from '../Paginator';
 import mainStyles from './index.module.scss';
 import { RepoItem } from '../../../../entities/repos/ui/RepoItem';
-import { $repoList, saveRepoList, saveRepoListPage, saveRepoListRepo } from './store';
+import { $repoList, saveRepoListPage } from './store';
 import { useUnit } from 'effector-react';
+import Skeleton from 'react-loading-skeleton'
 
-const { root, list } = mainStyles;
+const { root, list, skeletonRoot, skeletonHeader, skeletonRepos } = mainStyles;
 
 type Props = {
     repos: any[];
-
+    loading: boolean;
 }
 
-export function RepoList({ repos }: Props) {    
+export function RepoList({ repos, loading }: Props) {
     const [page, setPage] = useUnit([$repoList, saveRepoListPage]);
-        
+
     if (!repos || !repos.length) return null;
-    
+
     const handlePaginatorChange = (page: number) => {
         setPage(page);
+    }
+
+    if (loading) {
+        return <div className={skeletonRoot}>
+            <Skeleton className={skeletonHeader} height={34} />
+            <Skeleton className={skeletonRepos} height={32} count={10} />
+        </div>
     }
 
     return <div className={root}>

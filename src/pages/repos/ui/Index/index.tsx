@@ -10,13 +10,16 @@ import { $repoList, saveRepoListRepo } from "../../../../features/common/ui/Repo
 import { useUnit } from "effector-react";
 import { $query } from "../../../../features/common/ui/SearchPanel/store";
 import { mapperRepos } from "./lib";
+import { Skeleton } from "../../../../shared/ui/Skeleton";
 
 const { root, header, main, searchPanel } = mainStyles;
 
 export function Index() {
-    const [fetchRepos, { loading, data }] = useLazyQuery(getRepos);
-    const [fetchOwnRepos, { data: ownRepos }] = useLazyQuery(getOwnRepos);
+    const [fetchRepos, { loading:ldRepos, data }] = useLazyQuery(getRepos);
+    const [fetchOwnRepos, { loading:ldOwnRepos, data: ownRepos }] = useLazyQuery(getOwnRepos);
     const [repos, setRepos] = useUnit([$repoList, saveRepoListRepo]);
+
+    const loading = ldRepos || ldOwnRepos;
 
     useEffect(() => {
         const query = $query.getState();
@@ -49,7 +52,7 @@ export function Index() {
         <Header className={header} />
         <main className={main}>
             <SearchPanel className={searchPanel} onSearch={handleSearchPanel} onClear={handleSearchPanelClear} />
-            <RepoList repos={repos.repos} />
+            <RepoList repos={repos.repos} loading={loading} />
         </main>
         <Footer />
     </div>

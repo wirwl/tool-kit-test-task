@@ -45,6 +45,7 @@
     "passport": "^0.7.0",
     "passport-github2": "^0.1.12",
     "path": "^0.12.7",
+    "react-loading-skeleton": "^3.4.0",
     "react-router-dom": "^6.24.1",
     "react-select": "^5.8.0",
     "react-toastify": "^10.0.5",

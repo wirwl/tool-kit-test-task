@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { RepoShort } from '../../model/types';
 import mainStyles from './index.module.scss';
 import { debug } from 'console';
+import { DateTime } from 'luxon';
 
 const { root, cssName, link } = mainStyles;
 
@@ -14,7 +15,7 @@ export function RepoItem({data}: Props) {
 
     return <div className={root}>
         <Link className={cssName} to={`/repo/${name}/${login}`}>{name}</Link> 
-        &nbsp; &#9734; {stargazerCount} last commit: {pushedAt} <a className={link} href={url}>&#x1F517;</a> 
+        &nbsp; &#9734; {stargazerCount} last commit: {DateTime.fromISO(pushedAt).setLocale('ru').toFormat('d MMMM tt')} <a className={link} href={url}>&#x1F517;</a> 
     </div>
 }
 

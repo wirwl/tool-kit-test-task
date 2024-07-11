@@ -10,9 +10,10 @@ import {
 import { Repo } from '../pages/repos/ui/Repo/index.tsx';
 import { ApolloProvider } from '@apollo/client';
 import { initApolloClient } from '../entities/common/lib/apollo.ts';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const router = createBrowserRouter([
-  { path: "/*", element: <Index /> },
+  { path: "/", element: <Index /> },
   { path: "/repo/:name/:owner", element: <Repo /> },
 ]);
 
