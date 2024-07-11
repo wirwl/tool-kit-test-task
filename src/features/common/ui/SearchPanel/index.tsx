@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import mainStyles from './index.module.scss';
 import { Button } from '../../../../shared/ui/Button';
 import { $query, saveQuery } from './store';
 import { useUnit } from 'effector-react';
 import cn from 'classnames/bind';
+import { debounce } from 'lodash';
 
 const c = cn.bind(mainStyles);
 const { root, inputSearch, buttonSearch } = mainStyles;
@@ -16,31 +17,31 @@ type Props = {
 
 export function SearchPanel({ onSearch, onClear, className }: Props) {
     const [search, setSearch] = useUnit([$query, saveQuery]);
+    
 
     useEffect(() => {
         setSearch($query.getState());
     }, []);
 
-    const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value);
-    const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            handleSearchClick();
-        }
-    }
-    const handleSearchClick = async () => {
-        onSearch(search);
-    }
+    const debouncedSearch = useCallback(
+        debounce((text) => {
+            onSearch(text);
+          }, 500), []
+    ) 
+
+    const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearch(e.target.value);
+        debouncedSearch(e.target.value);
+    }    
 
     const handleClearClick = () => {
         setSearch('');
         onClear();
+        onSearch('');
     }
 
     return <div className={c(root, className)}>
-        <input className={inputSearch} value={search || ''} onChange={handleQueryChange} onKeyDown={handleInputKeyDown} />
-        <div>
-            <Button className={buttonSearch} onClick={handleSearchClick} text="Искать" />
-            <Button onClick={handleClearClick} text="Очистить" />
-        </div>
+        <input className={inputSearch} value={search || ''} onChange={handleQueryChange} />        
+            <Button onClick={handleClearClick} text="Очистить" />        
     </div>
 }

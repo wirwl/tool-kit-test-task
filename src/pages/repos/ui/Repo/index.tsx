@@ -1,18 +1,51 @@
+import { useLazyQuery } from "@apollo/client";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom"
+import { getRepo } from "../../../../entities/common/lib/gql";
+import mainStyles from './index.module.scss';
+
+const { root, row1, row2, row3, row4, langList, cssName, shortDesc } = mainStyles;
 
 export function Repo() {
-    const {name, owner} = useParams();
-    console.log(name, owner);
+    const { name, owner } = useParams();
 
-    useEffect(()=>{
-        (async () => {
-            // const result = await apolloClient.query({query: getRepos(search)});
-        })();
-        
-    },[]);
+    const [fetchRepo, { loading, data }] = useLazyQuery(getRepo, {
+        variables: {
+            name, owner
+        }
+    });
 
-    return <div>
-        111111111111111
+    useEffect(() => {
+        fetchRepo().then((data) => {
+            console.log(data);
+        });
+
+    }, []);
+
+    if (!data) return null;
+
+    const { stargazerCount, pushedAt, languages, shortDescriptionHTML } = data.repository;
+    const { edges: lngs } = languages;
+    const { avatarUrl, url } = data.repositoryOwner;
+
+    return <div className={root}>
+        <div className={row1}><span>{name}</span> &#9734; {stargazerCount} last commit: {pushedAt}</div>
+        <div className={row2}>
+            <img src={avatarUrl} width={200} height={200} />
+            <a className={cssName} target="_blank" href={url}>{name}</a>
+        </div>
+        <div className={row3}>
+            Список языков:{' '}
+            <ul className={langList}>
+                {lngs.map((lng: any) => {
+                    const { color, id, name } = lng.node;
+                    return <li key={id} style={{color}}>{name}</li>
+                })}
+            </ul>
+        </div>
+        <div className={row4}>
+              <p className={shortDesc}>Краткое описание репозитория:</p>
+              {shortDescriptionHTML}
+        </div>
     </div>
 }

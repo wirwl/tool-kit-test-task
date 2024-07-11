@@ -1,29 +1,39 @@
 import { useUnit } from "effector-react";
-import { $token, saveToken } from "../../../../shared/stores/token";
 import { Button } from "../../../../shared/ui/Button";
 import oa from 'oauthio-web';
+import { $authPanel, saveAuthData } from "./store";
+import mainStyles from './index.module.scss';
+import Loading from './loading.svg?react';
+import { useState } from "react";
+
+const {root} = mainStyles;
 
 export function AuthPanel() {
-    const [token, setToken] = useUnit([$token, saveToken]);
+    const [auth, setAuth] = useUnit([$authPanel, saveAuthData]);
+    const [loading, setLoading] = useState<'idle'|'loading'|'loaded'>('idle');
 
-    const handleClickLogin = () => {
-        oa.OAuth.initialize('HwAr2OtSxRgEEnO2-JnYjsuA3tc');
-
-        oa.OAuth.popup('github').then((github: any) => {
-            console.log('github:', github);
-            console.log('github', github.toJson());
-            setToken(github.access_token);
-            github.me().then((data: any) => {
-                console.log('me data:', data);
-            });
-            // github.get('/user').then(data => {
-            //     console.log('self data:', data);
-            // })
-        });
+    const handleClickLogin = async () => {
+        const currentAuth = $authPanel.getState();
+        if (currentAuth) {
+            setLoading('idle');
+            $authPanel.reinit();
+        } else {
+            oa.OAuth.initialize(import.meta.env.VITE_OAUTHIO_TOKEN);
+            setLoading('loading')
+            const github = await oa.OAuth.popup('github');            
+            const user = await github.me();
+            setAuth({ auth: github, user });
+            setLoading('loaded');
+        }
     }
 
-    return <div>
-        <Button onClick={handleClickLogin} text={token ? 'Выйти' : 'Войти на Github'} />
+    return <div className={root}>
+        {{
+            idle: null,
+            loading: <Loading/>,
+            loaded: <p><span>{auth?.user.name}</span> | <span>{auth?.user.email}</span></p> 
+        }[loading]}        
+        <Button onClick={handleClickLogin} text={auth ? 'Выйти' : 'Авторизоваться на Github'} />
     </div>
 
 }

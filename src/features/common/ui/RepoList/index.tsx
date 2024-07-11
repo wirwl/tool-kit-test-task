@@ -13,14 +13,10 @@ type Props = {
 }
 
 export function RepoList({ repos }: Props) {    
-    const [repoList, setPage] = useUnit([$repoList, saveRepoListPage]);
-
-    useEffect(()=> {
-        saveRepoListRepo(repos);
-    },[repos]);
-
+    const [page, setPage] = useUnit([$repoList, saveRepoListPage]);
+        
     if (!repos || !repos.length) return null;
-
+    
     const handlePaginatorChange = (page: number) => {
         setPage(page);
     }
@@ -28,12 +24,12 @@ export function RepoList({ repos }: Props) {
     return <div className={root}>
         <h1>Найдено репозиториев: {repos.length}</h1>
         <ul className={list}>
-            {repos.slice(repoList.page * 10, repoList.page * 10 + 10).map((repo) => {
+            {repos.slice(page.page * 10, page.page * 10 + 10).map((repo) => {
                 return <li key={repo.repo.id}>
                     <RepoItem data={repo.repo} />
                 </li>
             })}
         </ul>
-        <Paginator activePage={repoList.page} onChange={handlePaginatorChange} totalItemCount={repos.length} />
+        <Paginator activePage={page.page} onChange={handlePaginatorChange} totalItemCount={repos.length} />
     </div>
 }

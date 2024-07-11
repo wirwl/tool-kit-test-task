@@ -15,8 +15,7 @@ query getRepos($query: String!) {
           owner {
             login
           }
-          stargazerCount          
-        #   updatedAt
+          stargazerCount
           pushedAt
           url                    
         }
@@ -32,12 +31,11 @@ query getRepos($query: String!) {
 }
 `
 
-export const getRepo = (name:string, owner: string) => gql`
-query getRepo { 
-  repository(name:"${name}", owner:"${owner}") {
+export const getRepo = gql`
+query getRepo($name:String!, $owner:String!) { 
+  repository(name:$name, owner:$owner) {
     name
     stargazerCount
-    updatedAt
     pushedAt
     languages(first:5) {
       totalSize
@@ -55,7 +53,7 @@ query getRepo {
     } 
     shortDescriptionHTML
   }
-  repositoryOwner(login: "${owner}") {
+  repositoryOwner(login: $owner) {
     avatarUrl    
     url
   }
@@ -63,3 +61,28 @@ query getRepo {
 `
 
 
+export const getOwnRepos = gql`
+query getOwnRepos {
+  viewer {
+    repositories(first: 100, affiliations:[OWNER, ORGANIZATION_MEMBER, COLLABORATOR], ownerAffiliations:[OWNER, ORGANIZATION_MEMBER, COLLABORATOR]) {
+      totalCount
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      nodes{
+        id
+        name
+        stargazerCount
+        pushedAt
+        url
+        isPrivate
+        owner {
+            login
+            
+          }
+        }
+      }
+   }
+ }
+`

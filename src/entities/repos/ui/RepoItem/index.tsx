@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { RepoShort } from '../../model/types';
 import mainStyles from './index.module.scss';
+import { debug } from 'console';
 
 const { root, cssName, link } = mainStyles;
 
