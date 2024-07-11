@@ -1,0 +1,27 @@
+.root {
+    display: flex;
+    gap: 10px;
+}
+
+.page {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    background: #fff;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+
+    &:hover {
+        border: 1px solid gray;
+    }
+}
+
+.active {
+    color: #fff;
+    background: #000;
+    pointer-events: none;
+}

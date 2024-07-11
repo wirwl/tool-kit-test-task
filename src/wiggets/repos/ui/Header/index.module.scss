@@ -1,0 +1,9 @@
+.root {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid  lightgray;
+    padding: 15px 25px;
+    gap: 15px;
+    flex-wrap: wrap;
+}

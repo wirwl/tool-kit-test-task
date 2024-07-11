@@ -1,0 +1,18 @@
+.root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    margin-bottom: 20px;
+}
+
+.main {
+    flex-grow: 1;
+    padding-inline: 25px;
+}
+
+.searchPanel {
+    margin-bottom: 15px;
+}
