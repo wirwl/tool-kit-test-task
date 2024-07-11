@@ -5,7 +5,7 @@ const httpLink = createHttpLink({
     uri: 'https://api.github.com/graphql',
 });
 
-export function initApolloClient(token: string=import.meta.env.VITE_GITHUB_API_KEY) {
+export function initApolloClient(token: string="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") {
     const authLink = setContext((_, { headers }) => {
         return {
             headers: {

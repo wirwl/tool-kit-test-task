@@ -19,7 +19,7 @@ export function AuthPanel() {
             setLoading('idle');
             $authPanel.reinit();
         } else {
-            oa.OAuth.initialize(import.meta.env.VITE_OAUTHIO_TOKEN);
+            oa.OAuth.initialize("HwAr2OtSxRgEEnO2-JnYjsuA3tc");
             setLoading('loading')
             const github = await oa.OAuth.popup('github');            
             const user = await github.me();
