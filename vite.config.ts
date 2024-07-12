@@ -5,7 +5,7 @@ import vitePluginRequire from "vite-plugin-require";
 import crypto from 'crypto';
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig({  
   plugins: [react(), svgr()],
   css: {
     modules: {
