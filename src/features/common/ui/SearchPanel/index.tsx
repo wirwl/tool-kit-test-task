@@ -5,6 +5,7 @@ import { $query, saveQuery } from './store';
 import { useUnit } from 'effector-react';
 import cn from 'classnames/bind';
 import { debounce } from 'lodash';
+import { saveRepoListPage } from '../RepoList/store';
 
 const c = cn.bind(mainStyles);
 const { root, inputSearch } = mainStyles;
@@ -26,6 +27,7 @@ export function SearchPanel({ onSearch, onClear, className }: Props) {
     const debouncedSearch = useCallback(
         debounce((text) => {
             onSearch(text);
+            saveRepoListPage(0);
           }, 500), []
     ) 
 
